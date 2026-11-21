@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keep Alive Monitor</title>
+</head>
+<body>
+    <h2>Render Keep-Alive Monitor</h2>
+    <p id="status">Starting...</p>
+
+    <script>
+        const urls = [
+            "https://nexusguard.luzayer.xyz/",
+            "https://prooflayer-web.onrender.com/"
+        ];
+
+        const INTERVAL = 5 * 60 * 1000;
+
+        async function ping() {
+            for (const url of urls) {
+                try {
+                    await fetch(url, {
+                        method: "GET",
+                        mode: "no-cors",
+                        cache: "no-store"
+                    });
+
+                    console.log(`[${new Date().toLocaleString()}] Pinged: ${url}`);
+                } catch (error) {
+                    console.error(`Failed: ${url}`, error);
+                }
+            }
+
+            document.getElementById("status").textContent =
+                "Last ping: " + new Date().toLocaleString();
+        }
+
+        ping();
+        setInterval(ping, INTERVAL);
+    </script>
+</body>
+</html>
